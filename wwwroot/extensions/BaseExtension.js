@@ -54,5 +54,56 @@ export class BaseExtension extends Autodesk.Viewing.Extension{
             }, reject);
         });
     }
+
+// INTEGRAMOS EN LA EXTENSION BASE PADRE O SUPER LOS MECANISMOS Y LLAMADOS ALA API Chart.js
+    createToolbarButton(buttonId, buttonIconUrl, buttonTooltip) {
+        let group = this.viewer.toolbar.getControl('dashboard-toolbar-group');
+        if (!group) {
+            group = new Autodesk.Viewing.UI.ControlGroup('dashboard-toolbar-group');
+            this.viewer.toolbar.addControl(group);
+        }
+        const button = new Autodesk.Viewing.UI.Button(buttonId);
+        button.setToolTip(buttonTooltip);
+        group.addControl(button);
+        const icon = button.container.querySelector('.adsk-button-icon');
+        if (icon) {
+            icon.style.backgroundImage = `url(${buttonIconUrl})`;
+            icon.style.backgroundSize = `24px`;
+            icon.style.backgroundRepeat = `no-repeat`;
+            icon.style.backgroundPosition = `center`;
+        }
+        return button;
+    }
+
+    removeToolbarButton(button) {
+        const group = this.viewer.toolbar.getControl('dashboard-toolbar-group');
+        group.removeControl(button);
+    }
+
+
+    loadScript(url, namespace) {
+        if (window[namespace] !== undefined) {
+            return Promise.resolve();
+        }
+        return new Promise(function (resolve, reject) {
+            const el = document.createElement('script');
+            el.src = url;
+            el.onload = resolve;
+            el.onerror = reject;
+            document.head.appendChild(el);
+        });
+    }
+
+
+    loadStylesheet(url) {
+        return new Promise(function (resolve, reject) {
+            const el = document.createElement('link');
+            el.rel = 'stylesheet';
+            el.href = url;
+            el.onload = resolve;
+            el.onerror = reject;
+            document.head.appendChild(el);
+        });
+    }
 }
 
