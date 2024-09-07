@@ -1,13 +1,15 @@
+
+//CLASE PARA DESPLEGAR EL PANEL DE HERRAMIENTAS CON LOS BOTONES DE GRAFICAS  https://www.chartjs.org/docs/latest
 export class HistogramPanel extends Autodesk.Viewing.UI.DockingPanel {
     constructor(extension, id, title, options) {
         super(extension.viewer.container, id, title, options);
         this.extension = extension;
         this.container.style.left = (options.x || 0) + 'px';
         this.container.style.top = (options.y || 0) + 'px';
-        this.container.style.width = (options.width || 500) + 'px';
-        this.container.style.height = (options.height || 400) + 'px';
+        this.container.style.width = (options.width || 450) + 'px';
+        this.container.style.height = (options.height || 600) + 'px';
         this.container.style.resize = 'none';
-        this.chartType = options.chartType || 'bar'; // See https://www.chartjs.org/docs/latest for all the supported types of charts
+        this.chartType = options.chartType || 'bar'; 
         this.chart = this.createChart();
     }
 
@@ -17,7 +19,7 @@ export class HistogramPanel extends Autodesk.Viewing.UI.DockingPanel {
         this.container.appendChild(this.title);
         this.content = document.createElement('div');
         this.content.style.height = '350px';
-        this.content.style.backgroundColor = 'white';
+        this.content.style.backgroundColor = 'black';
         this.content.innerHTML = `
             <div class="props-container" style="position: relative; height: 25px; padding: 0.5em;">
                 <select class="props"></select>
@@ -42,6 +44,7 @@ export class HistogramPanel extends Autodesk.Viewing.UI.DockingPanel {
         });
     }
 
+    /// INTERACTUO CON LA METADATA DEL MODELO 
     async setModel(model) {
         const propertyNames = await this.extension.findPropertyNames(model);
         this.select.innerHTML = propertyNames.map(prop => `<option value="${prop}">${prop}</option>`).join('\n');
@@ -67,6 +70,7 @@ export class HistogramPanel extends Autodesk.Viewing.UI.DockingPanel {
                 const dbids = histogram.get(propertyValues[index]);
                 this.extension.viewer.isolate(dbids);
                 this.extension.viewer.fitToView(dbids);
+                this.extension.viewer.hide(dbids);
             }
         };
     }

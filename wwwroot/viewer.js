@@ -1,6 +1,6 @@
 import './extensions/BasePanel.js';
 import './extensions/HistogramExtension.js';
-
+import './extensions/TablaExtension.js';
 
 async function getAccessToken(callback) {
     try {
@@ -22,8 +22,8 @@ export function initViewer(container) {
                 extensions: [
                     'Autodesk.DocumentBrowser',
                     'BasePanel',
-
                     'HistogramExtension',
+                    'TablaExtension',
                 ]
                 
             };

@@ -1,6 +1,8 @@
+//IMPORTANDO LAS CLASES DE LAS EXTENSIONES BASE , SUPER
 import { BaseExtension } from './BaseExtension.js';
 import { HistogramPanel } from './HistogramPanel.js';
 
+//DEFINIMOS EL CONSTRUCTOR ESTANDAR EN CASO DE QUE QUISIERAMOS UNA GRAFICA DE PIE O DE BARRAS
 class HistogramExtension extends BaseExtension {
     constructor(viewer, options) {
         super(viewer, options);
@@ -9,7 +11,7 @@ class HistogramExtension extends BaseExtension {
         this._barChartPanel = null;
         this._pieChartPanel = null;
     }
-
+//CARGAMOS EL SCRIPT PARA GENERAR EL CHART
     async load() {
         super.load();
         await this.loadScript('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js', 'Chart');
@@ -32,10 +34,10 @@ class HistogramExtension extends BaseExtension {
         console.log('HistogramExtension unloaded.');
         return true;
     }
-
+//CREACION DE LA NUEVA SECCIÓN O BARRA DE HERRAMIENTAS DEL VISOR E INTEGRACIÓN DE LOS BOTONES NUEVOS
     onToolbarCreated() {
-        this._barChartPanel = new HistogramPanel(this, 'dashboard-barchart-panel', 'Property Histogram', { x: 10, y: 10, chartType: 'bar' });
-        this._pieChartPanel = new HistogramPanel(this, 'dashboard-piechart-panel', 'Property Histogram', { x: 10, y: 420, chartType: 'doughnut' });
+        this._barChartPanel = new HistogramPanel(this, 'dashboard-barchart-panel', 'GRAFICO DE RADAR', { x: 10, y: 10, chartType: 'radar' });
+        this._pieChartPanel = new HistogramPanel(this, 'dashboard-piechart-panel', 'GRÁFICO DE PIE', { x: 10, y: 420, chartType: 'doughnut' });
         this._barChartButton = this.createToolbarButton('dashboard-barchart-button', 'https://img.icons8.com/small/32/bar-chart.png', 'Show Property Histogram (Bar Chart)');
         this._barChartButton.onClick = () => {
             this._barChartPanel.setVisible(!this._barChartPanel.isVisible());
